@@ -73,7 +73,7 @@
       },
       "vendor": {
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}",
+          "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}",          
           "copySourcesOptions": {
             "exclusionList": [
               ".vs",
@@ -96,6 +96,6 @@
       "displayName": "Custom build preset",
       "description": "Custom build preset description",
       "configurePreset": "linux-debug"
-    }
+    }   
   ]
 }
