@@ -2,11 +2,11 @@
 	"dependencies": [
 		{
 			"name": "sqlite3",
-			"platform": "(windows & x64)|(linux & x64)"
+			"platform": "(windows)|(linux)"
 		},
 		{
 			"name": "fmt",
-			"platform": "(windows & x64)|(linux & x64)"
+			"platform": "(windows)|(linux)"
 		}
 	]
 }
