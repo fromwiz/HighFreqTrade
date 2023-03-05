@@ -12,8 +12,8 @@ list(APPEND INCLUDE_DIR_LIST "${PROJECT_SOURCE_DIR}")
 list(APPEND LINK_DIR_LIST "${PROJECT_SOURCE_DIR}")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	set(CMAKE_C_COMPILER /usr/bin/gcc-4.8)
-	set(CMAKE_CXX_COMPILER /usr/bin/g++-4.8)
+	#set(CMAKE_C_COMPILER /usr/bin/gcc-4.8)
+	#set(CMAKE_CXX_COMPILER /usr/bin/g++-4.8)
 	if(USE_UDP)
 		message("config for linux upd")
 					
