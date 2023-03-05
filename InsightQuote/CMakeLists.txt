@@ -29,14 +29,19 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 		
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libACE_SSL.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libprotobuf.so.11" DESTINATION ${INSTALL_DST_IDR})
+		# install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libprotobuf.so.11" DESTINATION ${INSTALL_DST_IDR})
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libACE.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libssl.so.10" DESTINATION ${INSTALL_DST_IDR})
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libcrypto.so.10" DESTINATION ${INSTALL_DST_IDR})
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libaeron_client_shared.so" DESTINATION ${INSTALL_DST_IDR})
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libaeron_driver.so" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libmdc_gateway_client.so" DESTINATION ${INSTALL_DST_IDR})		
-	
+		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libmdc_gateway_client.so" DESTINATION ${INSTALL_DST_IDR})
+		install(TARGETS libprotobuf DESTINATION ${INSTALL_DST_IDR})	
+
+		install(FILES "${CMAKE_INSTALL_PREFIX}/${INSTALL_DST_IDR}/libprotobuf.so" DESTINATION ${INSTALL_DST_IDR} RENAME "libprotobuf.so.11" OPTIONAL)		
+		install(FILES "${CMAKE_INSTALL_PREFIX}/${INSTALL_DST_IDR}/libprotobufd.so" DESTINATION ${INSTALL_DST_IDR} RENAME "libprotobuf.so.11" OPTIONAL)		
+		message("${CMAKE_INSTALL_PREFIX}/${INSTALL_DST_IDR}/libprotobufd.so")
+		
 	else()		
 		message("config for linux tcp")
 		
@@ -92,11 +97,12 @@ target_link_libraries(InsightQuote PUBLIC
 	aeron_client_shared
 	aeron_driver	
 	mdc_gateway_client
-	protobuf	
+	libprotobuf	
 	rt
 	pthread
 	)
 
 install(TARGETS InsightQuote DESTINATION ${INSTALL_DST_IDR})
+
 
 # TODO: Add tests and install targets if needed.

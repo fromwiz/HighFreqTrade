@@ -9,4 +9,5 @@ CACHE STRING "Vcpkg toolchain file")
 project ("HighFreqTrade")
 
 # Include sub-projects.
+add_subdirectory ("protobuf-3.1.0/cmake")
 add_subdirectory ("InsightQuote")

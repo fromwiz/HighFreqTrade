@@ -91,7 +91,7 @@
       }
     },
     {
-      "name": "linux-Release",
+      "name": "linux-release",
       "displayName": "Linux Release",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
@@ -126,10 +126,16 @@
   ],
   "buildPresets": [
     {
-      "name": "buildPresets",
+      "name": "linux-debug",
       "displayName": "Custom build preset",
       "description": "Custom build preset description",
       "configurePreset": "linux-debug"
-    }   
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Custom build preset",
+      "description": "Custom build preset description",
+      "configurePreset": "linux-release"
+    }
   ]
 }
