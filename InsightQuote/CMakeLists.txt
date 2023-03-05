@@ -2,9 +2,24 @@
 # project specific logic here.
 #
 project ("InsightQuote")
+set(CMAKE_C_COMPILER /usr/bin/gcc-4.8)
+set(CMAKE_CXX_COMPILER /usr/bin/g++-4.8)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 option(USE_UDP "use udp interface" ON)
-
+set (CMAKE_BUILE_TYPE DEBUG)
+add_definitions(-DDEBUG)
+add_definitions("-Wall -g")
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O0 -pthread")
+elseif(COMPILER_SUPPORTS_CXX0X)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x  --std=c++11")
 list(APPEND SRC_DIR_LIST "${PROJECT_SOURCE_DIR}")
 list(APPEND INCLUDE_DIR_LIST "${PROJECT_SOURCE_DIR}")
 list(APPEND LINK_DIR_LIST "${PROJECT_SOURCE_DIR}")
@@ -110,14 +125,19 @@ add_library(PROTB SHARED IMPORTED )
 set_target_properties(PROTB PROPERTIES IMPORTED_LOCATION 
 	"${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libprotobuf.so" )
 
+message("${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libprotobuf.so")
 target_link_libraries(InsightQuote PUBLIC
-	crypto10
-	ssl10
-	ACE643
-	ACESSL643
-	PROTB
 	aeron_client_shared
 	aeron_driver	
-	mdc_gateway_client)
+	mdc_gateway_client	
+	#ACE643
+	#ACESSL643
+	PROTB
+	#/usr/lib/libssl.so.10
+	#/usr/lib/libcrypto.so.10
+	#/usr/lib/libssl.so.10
+	rt
+	pthread
+	)
 
 # TODO: Add tests and install targets if needed.
