@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt : CMake project for HighFreqTrade, include source and define
 # project specific logic here.
 #
-project ("InsightQuote")
+project ("insight_quote")
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 option(USE_UDP "use udp interface" ON)
@@ -9,7 +9,6 @@ option(USE_UDP "use udp interface" ON)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x  --std=c++11")
 list(APPEND SRC_DIR_LIST "${PROJECT_SOURCE_DIR}")
 list(APPEND INCLUDE_DIR_LIST "${PROJECT_SOURCE_DIR}")
-list(APPEND LINK_DIR_LIST "${PROJECT_SOURCE_DIR}")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	#set(CMAKE_C_COMPILER /usr/bin/gcc-4.8)
@@ -25,7 +24,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 		list(APPEND SRC_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/include/mdc_gateway_client/protobuf")
 
-		list(APPEND LINK_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs")
+		list(APPEND PRE_BUILD_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs")
 
 		
 		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs/libACE_SSL.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
@@ -45,7 +44,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 		list(APPEND SRC_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/include/mdc_gateway_client/protobuf")
 
-		list(APPEND LINK_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs")
+		list(APPEND PRE_BUILD_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs")
 		
 	endif()
 	
@@ -58,12 +57,12 @@ else()
 
 	list(APPEND SRC_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/include/mdc_gateway_client/protobuf")
 
-	list(APPEND LINK_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs")
+	list(APPEND PRE_BUILD_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/udp/linux/libs")
 
 endif()
 
 message(${INCLUDE_DIR_LIST})
-message(${LINK_DIR_LIST})
+message(${PRE_BUILD_DIR_LIST})
 
 foreach(LOC_SRC ${SRC_DIR_LIST})
 	aux_source_directory(${LOC_SRC} LIB_PROTOBUF_SRC)
@@ -71,23 +70,23 @@ endforeach()
 
 
 # Add source to this project's executable.
-add_executable (InsightQuote 
+add_executable (insight_quote 
 				${LIB_PROTOBUF_SRC}
 				"InsightQuote.cpp" 
 				)
 
-target_include_directories(InsightQuote PRIVATE ${INCLUDE_DIR_LIST})
-target_link_directories(InsightQuote PRIVATE ${LINK_DIR_LIST})
+target_include_directories(insight_quote PRIVATE ${INCLUDE_DIR_LIST})
+target_link_directories(insight_quote PRIVATE ${PRE_BUILD_DIR_LIST})
 
 
 find_package(unofficial-sqlite3 REQUIRED)
-target_link_libraries(InsightQuote PUBLIC unofficial::sqlite3::sqlite3)
+target_link_libraries(insight_quote PUBLIC unofficial::sqlite3::sqlite3)
 
 find_package(fmt REQUIRED)
-target_link_libraries(InsightQuote PUBLIC fmt::fmt)
+target_link_libraries(insight_quote PUBLIC fmt::fmt)
 
 
-target_link_libraries(InsightQuote PUBLIC
+target_link_libraries(insight_quote PUBLIC
 	aeron_client_shared
 	aeron_driver	
 	mdc_gateway_client
@@ -96,7 +95,15 @@ target_link_libraries(InsightQuote PUBLIC
 	pthread
 	)
 
-install(TARGETS InsightQuote DESTINATION ${INSTALL_DST_IDR})
+foreach(LOC_SRC ${PRE_BUILD_DIR_LIST})
+	add_custom_command(TARGET insight_quote POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${LOC_SRC}
+        $<TARGET_FILE_DIR:insight_quote>)
+endforeach()
+
+
+install(TARGETS insight_quote DESTINATION ${INSTALL_DST_IDR})
 
 
 # TODO: Add tests and install targets if needed.
