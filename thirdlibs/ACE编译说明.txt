@@ -1,0 +1,11 @@
+apt install libssl1.0-dev
+export ACE_ROOT=/home/code/ACE_wrappers
+export MPC_ROOT=$ACE_ROOT/MPC
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ACE_ROOT/ace:$ACE_ROOT/lib:/usr/local/lib
+cd ace/
+cp config-linux.h config.h
+cd ../include/makeinclude/
+rm platform_macros.GNU
+ln -s ./platform_linux.GNU ./platform_macros.GNU
+cd $(ACE_ROOT)/ace
+make ssl=1 CFLAGS='-O3 -D_GLIBCXX_USE_CXX11_ABI=0' CXXFLAGS='-O3 -D_GLIBCXX_USE_CXX11_ABI=0'
