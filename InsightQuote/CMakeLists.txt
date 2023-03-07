@@ -9,6 +9,7 @@ option(USE_UDP "use udp interface" ON)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x  --std=c++11")
 list(APPEND SRC_DIR_LIST "${PROJECT_SOURCE_DIR}")
 list(APPEND INCLUDE_DIR_LIST "${PROJECT_SOURCE_DIR}")
+list(APPEND INCLUDE_DIR_LIST "${SPDLOG_INCLUDE_DIR}")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	#set(CMAKE_C_COMPILER /usr/bin/gcc-4.8)
@@ -82,9 +83,9 @@ target_link_directories(insight_quote PRIVATE ${PRE_BUILD_DIR_LIST})
 find_package(unofficial-sqlite3 REQUIRED)
 target_link_libraries(insight_quote PUBLIC unofficial::sqlite3::sqlite3)
 
-find_package(fmt REQUIRED)
-target_link_libraries(insight_quote PUBLIC fmt::fmt)
 
+target_link_libraries(insight_quote PUBLIC fmt::fmt)
+target_link_libraries(insight_quote PUBLIC spdlog::spdlog)
 
 target_link_libraries(insight_quote PUBLIC
 	aeron_client_shared
@@ -92,7 +93,7 @@ target_link_libraries(insight_quote PUBLIC
 	mdc_gateway_client
 	protobuf	
 	rt
-	pthread
+	pthread	
 	)
 
 foreach(LOC_SRC ${PRE_BUILD_DIR_LIST})

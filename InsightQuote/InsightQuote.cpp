@@ -3,8 +3,9 @@
 #include <vector>
 #include <fmt/ranges.h>
 #include <sqlite3.h>
-
-
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/daily_file_sink.h>
+#include "spdlog/sinks/stdout_color_sinks.h"
 #include "InsightQuote.h"
 #include "BaseFunction.h"
 #include "InsightHandle.h"
@@ -72,11 +73,9 @@ void test_udp_client_subscribe_type()
 }
 
 int main()
-{
-	std::vector<int> v = { 1, 2, 3 };
-	fmt::print("{}\n", v);
-	sqlite3* targ = nullptr;
-	sqlite3_open("data.sqlit", &targ);
-	fmt::print("{}\n", (int64_t)targ);
-	fmt::print("end\n");
+{    
+    auto logger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 4, 30);
+    spdlog::get("daily_logger")->info("sha,dd,ni好");
+    auto console = spdlog::stdout_color_mt("console");    
+    console->info("年后,ni和");   
 }

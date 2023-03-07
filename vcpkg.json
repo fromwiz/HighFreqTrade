@@ -3,10 +3,6 @@
 		{
 			"name": "sqlite3",
 			"platform": "(windows)|(linux)"
-		},
-		{
-			"name": "fmt",
-			"platform": "(windows)|(linux)"
 		}
 	]
 }

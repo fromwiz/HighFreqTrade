@@ -127,13 +127,13 @@
   "buildPresets": [
     {
       "name": "linux-debug",
-      "displayName": "Custom build preset",
+      "displayName": "linux-debug",
       "description": "Custom build preset description",
       "configurePreset": "linux-debug"
     },
     {
       "name": "linux-release",
-      "displayName": "Custom build preset",
+      "displayName": "linux-release",
       "description": "Custom build preset description",
       "configurePreset": "linux-release"
     }

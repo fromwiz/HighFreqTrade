@@ -1,0 +1,19 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "cppgdb",
+      "name": "insight_quote",
+      "project": "CMakeLists.txt",
+      "projectTarget": "insight_quote",
+      "comment": "Learn how to configure remote debugging. For more info, see http://aka.ms/vslinuxdebug",
+      "debuggerConfiguration": "gdb",
+      "MIMode": "gdb",
+      "args": [],
+      "env": {
+        "LD_LIBRARY_PATH": "${debugInfo.defaultWorkingDirectory}"
+      }
+    }
+  ]
+}
