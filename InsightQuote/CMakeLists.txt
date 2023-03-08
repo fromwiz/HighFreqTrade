@@ -47,13 +47,11 @@ if(NOT MSVC)
 
 		list(APPEND PRE_BUILD_DIR_LIST "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/libs")
 		
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libACE_SSL.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libprotobuf.so.11" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libprotobuf.so" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libACE.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libaeron_client_shared.so" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libaeron_driver.so" DESTINATION ${INSTALL_DST_IDR})
-		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/build/libmdc_gateway_client.so" DESTINATION ${INSTALL_DST_IDR})
+		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/libs/libACE_SSL.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
+		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/libs/libprotobuf.so.11" DESTINATION ${INSTALL_DST_IDR})
+		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/libs/libprotobuf.so" DESTINATION ${INSTALL_DST_IDR})
+		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/libs/libACE.so.6.4.3" DESTINATION ${INSTALL_DST_IDR})
+		install(FILES  "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/linux/libs/libmdc_gateway_client.so" DESTINATION ${INSTALL_DST_IDR})
 	endif()
 	
 else()
@@ -122,9 +120,18 @@ if(MSVC)
 			)
 	endif()
 	add_custom_command(TARGET insight_quote POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${PROJECT_SOURCE_DIR}/../lib/insight/tcp/windows/cert"
-        $<TARGET_FILE_DIR:insight_quote>/cert)
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+			"${PROJECT_SOURCE_DIR}/../lib/insight/tcp/windows/cert"
+			$<TARGET_FILE_DIR:insight_quote>/cert)
+	
+	install(TARGETS insight_quote
+    COMPONENT insight_quote
+    RUNTIME_DEPENDENCIES
+    PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+    POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+    DIRECTORIES $<TARGET_FILE_DIR:insight_quote>
+	DESTINATION ${INSTALL_DST_IDR}
+	)
 else()
 	if(USE_UDP)
 		target_link_libraries(insight_quote PUBLIC 
