@@ -11,4 +11,5 @@ project ("HighFreqTrade")
 # Include sub-projects.
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdlibs/fmt-9.1.0")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdlibs/spdlog-1.11.0")
-add_subdirectory ("InsightQuote")
+add_subdirectory ("insight_quote")
+add_subdirectory ("test")
